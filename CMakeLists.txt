@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.3)
-project(SFGE)
+project(MMGGA)
 
 include(cmake/IntelCompileFeatures.cmake)
 
@@ -36,7 +36,7 @@ set(EXTERNAL_DIR ${CMAKE_SOURCE_DIR}/externals)
 
 include_directories(include ${CMAKE_SOURCE_DIR}/include)
 
-file(GLOB_RECURSE SFGE_SRC src/*/*.cpp include/*.h)
+file(GLOB_RECURSE MMGGA_SRC src/*/*.cpp include/*.h)
 
 #SFML
 set(SFML_DIR ${EXTERNAL_DIR}/SFML)
@@ -44,7 +44,7 @@ set(SFML_BUILD_EXAMPLES FALSE)
 set(BUILD_SHARED_LIBS FALSE)
 add_subdirectory(${SFML_DIR})
 include_directories(${SFML_DIR}/include)
-LIST(APPEND SFGE_LIBRARIES
+LIST(APPEND MMGGA_LIBRARIES
 	sfml-system
 	sfml-window
 	sfml-graphics
@@ -58,7 +58,7 @@ set(IMGUI_ROOT ${EXTERNAL_DIR}/imgui/)
 set(SFML_ROOT ${EXTERNAL_DIR}/SFML/)
 add_subdirectory(${SFML_IMGUI})
 include_directories(${IMGUI_ROOT} ${SFML_IMGUI})
-LIST(APPEND SFGE_LIBRARIES 
+LIST(APPEND MMGGA_LIBRARIES 
 	imgui-sfml)
 
 
@@ -70,14 +70,14 @@ SET(BOX2D_BUILD_STATIC ON  CACHE INTERNAL "")
 
 add_subdirectory(${BOX2D_DIR})
 include_directories(${BOX2D_DIR}/Box2D/)
-LIST(APPEND SFGE_LIBRARIES
+LIST(APPEND MMGGA_LIBRARIES
 	Box2D)
 
 #JSON
 set(JSON_DIR ${EXTERNAL_DIR}/json/)
 add_subdirectory(${JSON_DIR})
 include_directories(${JSON_DIR}/src/)
-LIST(APPEND SFGE_LIBRARIES
+LIST(APPEND MMGGA_LIBRARIES
 	nlohmann_json)
 
 #PYTHON
@@ -90,7 +90,7 @@ IF(NOT WIN32)
 		add_definitions(-O3)
 	ENDIF()
 
-	LIST(APPEND SFGE_LIBRARIES resolv)
+	LIST(APPEND MMGGA_LIBRARIES resolv)
 ELSE()
 	add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 ENDIF()
@@ -100,27 +100,21 @@ find_package(PythonLibs 3 EXACT REQUIRED)
 
 include_directories(${PYTHON_INCLUDE_DIR})
 
-LIST(APPEND SFGE_LIBRARIES ${PYTHON_LIBRARY})
+LIST(APPEND MMGGA_LIBRARIES ${PYTHON_LIBRARY})
 
 #PYBIND11
 set(PYBIND11_DIR ${EXTERNAL_DIR}/pybind11/)
 add_subdirectory(${PYBIND11_DIR})
 include_directories(${PYBIND11_DIR})
-LIST(APPEND SFGE_LIBRARIES
+LIST(APPEND MMGGA_LIBRARIES
   pybind11)
 
-#SFGE_COMMON
+#MMGGA
 if(NOT WIN32)
-LIST(APPEND SFGE_LIBRARIES
+LIST(APPEND MMGGA_LIBRARIES
   stdc++fs)
 ENDIF()
-add_library(SFGE_COMMON STATIC ${SFGE_SRC})
 include_directories(include/)
-target_link_libraries(SFGE_COMMON PUBLIC ${SFGE_LIBRARIES})
 
-#SFGE
-add_executable(SFGE src/main.cpp)
-
-MESSAGE("SFGE_COMMON: " ${SFGE_COMMON})
-
-target_link_libraries(SFGE PUBLIC SFGE_COMMON)
+add_executable(MMGGA src/main.cpp ${MMGGA_SRC})
+target_link_libraries(MMGGA PUBLIC ${MMGGA_LIBRARIES})
