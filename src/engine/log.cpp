@@ -24,7 +24,7 @@
 
 #include <engine/log.h>
 
-namespace sfge
+namespace mmgga
 {
 
 void Log::Msg(const std::string & text)

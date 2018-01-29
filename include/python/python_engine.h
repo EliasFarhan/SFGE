@@ -22,12 +22,12 @@
  SOFTWARE.
  */
 
-#ifndef SFGE_PYENGINE_H
-#define SFGE_PYENGINE_H
+#ifndef MMGGA_PYENGINE_H
+#define MMGGA_PYENGINE_H
 
 #include <engine/engine.h>
 #include <SFML/System/Time.hpp>
-namespace sfge
+namespace mmgga
 {
 /**
 * \brief Manage the python interpreter

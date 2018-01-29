@@ -21,43 +21,133 @@
  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  SOFTWARE.
  */
-#include <experimental/filesystem>
 
+//Externals includes
+#include "json.hpp"
+using json = nlohmann::json;
+//STL includes
+#include <experimental/filesystem>
+#include <fstream>
+//SFGE includes
 #include <engine/game_object.h>
 #include <engine/scene.h>
 #include <engine/log.h>
 
+// for convenience
 namespace fs = std::experimental::filesystem;
 
-namespace sfge
+namespace mmgga
 {
 
 void SceneManager::Init()
 {
-	fs::path scene_data_dir = "data/scenes/";
-	if (fs::is_directory(scene_data_dir))
+	std::list<std::string>& scenesList = Engine::GetInstance()->GetConfig()->scenesList;
+	if(scenesList.size() > 0)
 	{
-		for (auto& f : fs::directory_iterator(scene_data_dir))
+		fs::path firstScenePath = *scenesList.begin();
+		if (fs::is_regular_file(firstScenePath))
 		{
-			if (fs::is_regular_file(f))
+			if (firstScenePath.extension() == fs::path(".json"))
 			{
-				auto p = f.path();
-				if (p.extension() == fs::path(".scene"))
-				{
-					Log::GetInstance()->Msg("There is a scene");
-				}
+				currentScene = LoadScene(firstScenePath.string());
 			}
 		}
 	}
-
 }
 
-void SceneManager::Update(sf::Time)
+
+
+void SceneManager::Update(sf::Time dt)
 {
+	if(currentScene)
+	{
+		currentScene->Update(dt);
+	}
 }
+
+void SceneManager::SaveScene(Scene* scene)
+{
+	json j2 = {
+		{ "pi", 3.141 },
+		{ "happy", true },
+		{ "name", "Niels" },
+		{ "nothing", nullptr },
+		{ "answer",{
+			{ "everything", 42 }
+		} },
+		{ "list",{ 1, 0, 2 } },
+		{ "object",{
+			{ "currency", "USD" },
+			{ "value", 42.99 }
+		} }
+	};
+
+	std::ofstream o("data/scenes/pretty.json");
+	o << std::setw(4) << j2 << std::endl;
+}
+
+Scene* SceneManager::LoadScene(std::string sceneName)
+{
+	std::ifstream sceneFile(sceneName);
+	if (sceneFile.peek() == std::ifstream::traits_type::eof())
+	{
+		Log::GetInstance()->Error("EMPTY SCENE FILE");
+		return nullptr;
+	}
+
+	json sceneJson;
+
+	try
+	{
+		sceneFile >> sceneJson;
+	}
+	catch (json::parse_error& e)
+	{
+		Log::GetInstance()->Error("THE SCENE FILE IS NOT JSON");
+		return nullptr;
+	}
+
+	Scene* scene = new Scene();
+	scene->name = sceneJson["sceneName"].get<std::string>();
+	mmgga::Log::GetInstance()->Msg(scene->name);
+
+
+	for(json gameObjectJson : sceneJson["gameObjects"])
+	{
+		GameObject* gameObject = GameObject::LoadGameObject(gameObjectJson);
+		if(gameObject)
+		{
+			scene->m_GameObjects.push_back(gameObject);
+		}
+	}
+	return scene;
+}
+
+
 
 void SceneManager::Destroy()
 {
+	if(currentScene)
+	{
+		delete currentScene;
+		currentScene = nullptr;
+	}
 }
 
+void Scene::Update(sf::Time dt)
+{
+	for(GameObject* gameObject : m_GameObjects)
+	{
+		gameObject->Update(dt);
+	}
+}
+
+Scene::~Scene()
+{
+	while(!m_GameObjects.empty())
+	{
+		delete m_GameObjects.front();
+		m_GameObjects.pop_front();
+	}
+}
 }

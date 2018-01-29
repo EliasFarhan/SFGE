@@ -22,12 +22,12 @@
  SOFTWARE.
  */
 
-#ifndef SFGE_UTILIY_H
-#define SFGE_UTILIY_H
+#ifndef MMGGA_UTILITY_H
+#define MMGGA_UTILITY_H
 
 #include <stdlib.h> // size_t
 #include <string>
-namespace sfge
+namespace mmgga
 {
 /**
 * \brief Singleton template class used by the modules of the Engine

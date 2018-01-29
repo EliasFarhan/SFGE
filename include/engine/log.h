@@ -22,15 +22,15 @@
  SOFTWARE.
  */
 
-#ifndef SFGE_LOG_H
-#define SFGE_LOG_H
+#ifndef MMGGA_LOG_H
+#define MMGGA_LOG_H
 
 #include <iostream>
 #include <string>
 
 #include <engine/utility.h>
 
-namespace sfge
+namespace mmgga
 {
 /**
 * \brief Log takes the different message from different parts of the program and write them in the console

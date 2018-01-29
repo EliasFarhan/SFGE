@@ -22,9 +22,59 @@
  SOFTWARE.
  */
 
-#include "engine/game_object.h"
+#include <engine\game_object.h>
+#include <engine\component.h>
+#include <graphics\sprite.h>
+#include <engine\log.h>
 
-namespace sfge
+namespace mmgga
 {
+	void GameObject::Update(sf::Time dt)
+{
+	for(Component* component : m_Components)
+	{
+	}
+}
 
+GameObject* GameObject::LoadGameObject(json gameObjectJson)
+{
+	std::string jsonName = gameObjectJson["name"];
+	GameObject* gameObject = new GameObject();
+	gameObject->name = jsonName;
+
+	Log::GetInstance()->Msg(jsonName);
+
+	for(json componentJson : gameObjectJson["components"])
+	{
+		Component* component = nullptr;
+
+		std::string componentType;
+
+		try
+		{
+			 componentType = componentJson["type"].get<std::string>();
+		}
+		catch (json::type_error& e)
+		{
+			mmgga::Log::GetInstance()->Error("JSon Error type: " + componentJson["type"].type_name());
+			continue;
+		}
+
+		mmgga::Log::GetInstance()->Msg(componentType);
+		
+		if(componentType == "Transform")
+		{
+			component = Transform::LoadTransform(componentJson,*gameObject);
+		}
+		else if(componentType == "Sprite")
+		{
+			component = Sprite::LoadSprite(componentJson);
+		}
+		if(component)
+		{
+			gameObject->m_Components.push_back(component);
+		}
+	}
+	return gameObject;
+}
 }

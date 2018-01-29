@@ -34,7 +34,7 @@
 
 namespace py = pybind11;
 
-namespace sfge
+namespace mmgga
 {
 
 PYBIND11_MODULE(SFGE, m)

@@ -24,8 +24,8 @@
 
 
 
-#ifndef SFGE_GLOBALS_H
-#define SFGE_GLOBALS_H
+#ifndef MMGGA_GLOBALS_H
+#define MMGGA_GLOBALS_H
 
 
 #define PATH_LIMIT 4096

@@ -22,8 +22,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_SPRITE_H
-#define SFGE_SPRITE_H
+#ifndef MMGGA_SPRITE_H
+#define MMGGA_SPRITE_H
 
 //STL
 #include <map>
@@ -35,7 +35,7 @@ SOFTWARE.
 //Dependencies
 #include <SFML/Graphics.hpp>
 
-namespace sfge
+namespace mmgga
 {
 
 /**
@@ -43,6 +43,8 @@ namespace sfge
 */
 class Sprite : public Component
 {
+public:
+	static Sprite* LoadSprite(json componentJson);
 protected:
 	std::string filename;
 	sf::Sprite* sprite;
@@ -57,39 +59,7 @@ protected:
 	std::list<sf::Sprite> sprites;
 };
 
-/**
-* \brief The Texture Manager is the cache of all the textures used for sprites or other objects
-*
-*/
-class TextureManager : public Singleton<TextureManager>
-{
-public:
-	/**
-	* \brief load the texture from the disk or the texture cache
-	* \param filename The filename string of the texture
-	* \return The strictly positive texture id > 0, if equals 0 then the texture was not loaded
-	*/
-	unsigned int LoadTexture(std::string filename);
-	/**
-	* \brief unload the texture by removing a reference count, if reference count is 0 then it is unloaded from the cache
-	* \param text_id The texture id striclty positive
-	*
-	*/
-	void UnloadTexture(unsigned int text_id);
-	/**
-	* \brief Used after loading the texture in the texture cache to get the pointer to the texture
-	* \param text_id The texture id striclty positive
-	* \return The pointer to the texture in memory
-	*/
-	sf::Texture* GetTexture(unsigned int text_id);
 
-private:
-
-	std::map<std::string, unsigned int> nameIdsMap;
-	std::map<unsigned int, sf::Texture> texturesMap;
-	std::map<unsigned int, unsigned int> refCountMap;
-	unsigned int increment_id = 0;
-};
 
 }
 #endif // !SFGE_SPRITE

@@ -26,13 +26,12 @@ SOFTWARE.
 #include <engine/engine.h>
 #include <engine/log.h>
 
-
 int main()
 {
-    sfge::Log::GetInstance()->Msg("SFGE 0.1 by SAE Institute Switzerland AG");
+    mmgga::Log::GetInstance()->Msg("MMGGA 0.1 by SAE Institute Switzerland AG");
     
-	sfge::Engine::GetInstance()->Init();
-	sfge::Engine::GetInstance()->Start();
+	mmgga::Engine::GetInstance()->Init();
+	mmgga::Engine::GetInstance()->Start();
 #ifdef WIN32
 	system("pause");
 #endif

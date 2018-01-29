@@ -22,11 +22,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_GRAPHICS_H
-#define SFGE_GRAPHICS_H
+#ifndef MMGGA_GRAPHICS_H
+#define MMGGA_GRAPHICS_H
 #include <engine/engine.h>
 
-namespace sfge
+namespace mmgga
 {
 
 

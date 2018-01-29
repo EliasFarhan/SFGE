@@ -35,7 +35,7 @@ SOFTWARE.
 #include <imgui-SFML.h>
 #include <imgui.h>
 
-namespace sfge
+namespace mmgga
 {
 
 

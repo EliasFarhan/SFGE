@@ -22,12 +22,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_INPUT_H
-#define SFGE_INPUT_H
+#ifndef MMGGA_INPUT_H
+#define MMGGA_INPUT_H
 
 #include <engine/engine.h>
 
-namespace sfge
+namespace mmgga
 {
 
 /**

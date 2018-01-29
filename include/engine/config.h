@@ -22,19 +22,25 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef SFGE_CONFIG_H
-#define SFGE_CONFIG_H
-
+#ifndef MMGGA_CONFIG_H
+#define MMGGA_CONFIG_H
+//Externals include
 #include <SFML/System/Vector2.hpp>
-
+//STL includes
+#include <list>
+//SFGE includes
 #include <engine/utility.h>
-namespace sfge
-{
 
+namespace mmgga
+{
+/**
+* \brief Used by the Engine to get a Configuration.
+*/
 struct Configuration
 {
 	sf::Vector2i screenResolution = sf::Vector2i(800, 600);
 	unsigned int maxFramerate = 60;
+	std::list<std::string> scenesList;
 };
 
 /**
